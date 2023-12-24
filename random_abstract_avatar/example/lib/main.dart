@@ -26,31 +26,28 @@ class _TestAppState extends State<TestApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        theme: ThemeData.dark(useMaterial3: true),
         home: Scaffold(
             body: Center(
                 child: Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-              SizedBox(
-                  width: 200,
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Username',
-                    ),
-                    controller: _controller,
-                  )),
-              Avatar(
-                source: _controller.text,
-                coloring: AvatarColoring.fromColors(
-                    foregroundColor: Colors.black,
-                    backgroundColor: Colors.white),
-                layersCount: AvatarLayersCount.one,
-                borderRadius: 32,
-                sourceSize: 128,
-              )
-            ]))));
+          SizedBox(
+              width: 200,
+              child: TextField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Username',
+                ),
+                controller: _controller,
+              )),
+          const SizedBox(width: 16),
+          Avatar(
+            source: _controller.text,
+            foregroundColor: Colors.pink,
+            backgroundColor: Colors.black,
+            size: 64,
+          ),
+        ]))));
   }
 }
