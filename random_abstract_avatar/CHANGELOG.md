@@ -1,3 +1,8 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+* Project generation
+
+## 0.9.1
+
+* Generate avatars with up to three visual layers
+* Used xxhash128

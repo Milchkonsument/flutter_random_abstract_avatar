@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:random_abstract_avatar/blob_avatars.dart';
+import 'package:random_abstract_avatar/random_abstract_avatar.dart';
 
 void main() {
   runApp(const TestApp());

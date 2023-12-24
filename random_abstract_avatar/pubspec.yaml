@@ -1,7 +1,7 @@
 name: random_abstract_avatar
-description: "Random Abstract Avatar lets you generate unique and abstract user avatars."
+description: 'Random Abstract Avatar lets you generate unique and abstract user avatars.'
 version: 0.9.1
-homepage:
+repository: 'https://github.com/Milchkonsument/flutter_random_abstract_avatar'
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
