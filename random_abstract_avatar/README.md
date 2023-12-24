@@ -7,6 +7,11 @@
 * 🚀 **Fast:** with the help of [xxhash](https://github.com/Cyan4973/xxHash) and the dart UI canvas, avatar images get generated in an instant
 
 ## Getting Started
+### Include in Project
+```
+import 'package:random_abstract_avatar/random_abstract_avatar.dart';
+```
+
 ### Basic Widget
 ```
 Avatar(source: 'test')
