@@ -1,0 +1,13 @@
+name: random_abstract_avatar
+description: "Random Abstract Avatar lets you generate unique and abstract user avatars."
+version: 0.9.1
+homepage:
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  hashlib: ^1.0.0
