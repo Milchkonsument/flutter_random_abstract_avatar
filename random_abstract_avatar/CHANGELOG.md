@@ -10,3 +10,13 @@
 ## 0.9.2
 * Simplified demo project
 * Added proper readme
+
+## 0.9.3
+* Further improved readme
+
+## 1.0.0
+* Fixed white space issue with border decorations
+* Simplified the coloring system
+* Improved field naming
+* Updated examples to match new API
+* Made readme more beautiful

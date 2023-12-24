@@ -3,33 +3,52 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:hashlib/hashlib.dart';
+import 'package:random_abstract_avatar/helper.dart';
 
 // ignore: must_be_immutable
 class Avatar extends StatelessWidget {
+  /// Creates a random avatar based on the provided [source].
   Avatar({
     required this.source,
-    required this.coloring,
-    this.layersCount = AvatarLayersCount.three,
-    this.sourceSize = 64,
+    this.backgroundColor = Colors.white,
+    this.foregroundColor = Colors.black,
     this.borderRadius = 16,
+    this.complexity = AvatarComplexity.complex,
+    this.size = 64,
     this.decoration,
     super.key,
   });
 
   /// Generation source for the avatar. Usually a username or email.
   final String source;
-  Uint8List? _cache;
-  final AvatarLayersCount layersCount;
-  final AvatarColoring coloring;
-  final double sourceSize;
+  final Color backgroundColor;
+  final Color foregroundColor;
+  final double size;
   final double borderRadius;
+
+  /// Complexity of the avatar.
+  ///
+  /// The higher the complexity, the more layers will be drawn to the avatar.
+  ///
+  /// The higher the complexity, the longer it takes to generate the avatar,
+  /// although the perfomance impact should not pose a problem either way.
+  ///
+  /// _It is recommended to use the default setting [complex] as it has the best_
+  /// _results visually._
+  final AvatarComplexity complexity;
+
+  /// Decoration, in case you want to add a border, background image, or gradient.
   final BoxDecoration? decoration;
+
+  // image data gets cached to prevent unnecessary regeneration.
+  // I don't know if this actually does anything.
+  Uint8List? _cache;
 
   Future<Uint8List> _generateImageBytedata(String s) async {
     final hash = xxh128sum(s);
-    final partSize = (hash.length / layersCount.value).floor();
+    final partSize = (hash.length / complexity.value).floor();
 
-    final layerHashsums = List.generate(layersCount.value,
+    final layerHashsums = List.generate(complexity.value,
             (i) => hash.substring(i * partSize, i * partSize + partSize))
         .map(xxh128sum)
         .toList();
@@ -37,30 +56,26 @@ class Avatar extends StatelessWidget {
     final sourceRect = Rect.fromLTWH(
       0,
       0,
-      sourceSize,
-      sourceSize,
+      size,
+      size,
     );
 
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder, sourceRect);
 
     final bgPaint = Paint()
-      ..color = coloring.backgroundColor
+      ..color = backgroundColor
       ..style = PaintingStyle.fill;
 
     canvas.drawRect(sourceRect, bgPaint);
 
     for (var i = layerHashsums.length - 1; i >= 0; i--) {
       final hash = layerHashsums[i];
-      // final scale = (i + 1 / layerHashsums.length - 1);
       final paint = Paint()
         ..color = (switch (i) {
-          // foreground
-          0 => coloring.foregroundColor,
-          // first layer
-          1 => coloring.firstLayerColor,
-          // second layer
-          _ => coloring.secondLayerColor,
+          0 => foregroundColor,
+          1 => foregroundColor.darker(30),
+          _ => foregroundColor.darker(60),
         })
         ..style = PaintingStyle.fill;
 
@@ -70,31 +85,29 @@ class Avatar extends StatelessWidget {
 
         final offsetX = int.parse(hash.substring(off, off + 2), radix: 16) /
             255 *
-            sourceSize *
+            size *
             offset;
         final circleSize =
             int.parse(hash.substring(off + 4, off + 6), radix: 16) /
                 255 *
-                sourceSize *
+                size *
                 0.2;
 
         final offsetY = int.parse(hash.substring(off + 7, off + 9), radix: 16) /
             255 *
-            sourceSize *
+            size *
             offset;
 
         canvas.drawCircle(Offset(offsetX, offsetY), circleSize, paint);
-        canvas.drawCircle(Offset(sourceSize - offsetX, sourceSize - offsetY),
-            circleSize, paint);
         canvas.drawCircle(
-            Offset(offsetX, sourceSize - offsetY), circleSize, paint);
-        canvas.drawCircle(
-            Offset(sourceSize - offsetX, offsetY), circleSize, paint);
+            Offset(size - offsetX, size - offsetY), circleSize, paint);
+        canvas.drawCircle(Offset(offsetX, size - offsetY), circleSize, paint);
+        canvas.drawCircle(Offset(size - offsetX, offsetY), circleSize, paint);
       }
     }
 
     final picture = recorder.endRecording();
-    final img = picture.toImageSync(sourceSize.toInt(), sourceSize.toInt());
+    final img = picture.toImageSync(size.toInt(), size.toInt());
     final bytedata = (await img.toByteData(format: ui.ImageByteFormat.png))!;
 
     return bytedata.buffer.asUint8List();
@@ -113,8 +126,8 @@ class Avatar extends StatelessWidget {
                 if (snap.hasData && snap.data != null) {
                   return Image.memory(
                     snap.data!,
-                    height: sourceSize,
-                    width: sourceSize,
+                    height: size,
+                    width: size,
                   );
                 }
 
@@ -124,87 +137,24 @@ class Avatar extends StatelessWidget {
 
                 return ClipRRect(
                     borderRadius: BorderRadius.circular(borderRadius),
-                    child: Container(color: coloring.backgroundColor));
+                    child: Container(color: backgroundColor));
               })));
 }
 
-class AvatarColoring {
-  /// Defines the coloring used to generate the avatar.
-  ///
-  /// _[firstLayerColor] and [secondLayerColor] are optional
-  /// and will be used only if [layersType]
-  /// is set to [AvatarLayersCount.two] or [AvatarLayersCount.three] respectively._
-  ///
-  /// __See also:__
-  /// * [AvatarColoring.fromThemedata]
-  /// * [AvatarColoring.fromThemedataOnTransparent]
-  /// * [AvatarColoring.fromContext].
-  const AvatarColoring._({
-    required this.foregroundColor,
-    required this.backgroundColor,
-    required this.firstLayerColor,
-    required this.secondLayerColor,
-  });
+/// Complexity of the avatar.
+///
+/// The higher the complexity, the more layers will be drawn to the avatar.
+///
+/// The higher the complexity, the longer it takes to generate the avatar,
+/// although the perfomance impact should not pose a problem either way.
+///
+/// _It is recommended to use the default setting [complex] as it has the best_
+/// _results visually._
+enum AvatarComplexity {
+  simple(1),
+  medium(2),
+  complex(3);
 
-  factory AvatarColoring.fromColors({
-    required Color foregroundColor,
-    required Color backgroundColor,
-    Color? firstLayerColor,
-    Color? secondLayerColor,
-  }) {
-    return AvatarColoring._(
-      foregroundColor: foregroundColor,
-      backgroundColor: backgroundColor,
-      firstLayerColor: firstLayerColor ??
-          Color.lerp(foregroundColor, backgroundColor, 0.33)!,
-      secondLayerColor: secondLayerColor ??
-          Color.lerp(foregroundColor, backgroundColor, 0.66)!,
-    );
-  }
-
-  /// Generates coloring based on current theme.
-  factory AvatarColoring.fromThemedata(ThemeData theme) {
-    return AvatarColoring._(
-      foregroundColor: theme.colorScheme.primary,
-      firstLayerColor: theme.colorScheme.secondary,
-      secondLayerColor: theme.colorScheme.tertiary,
-      backgroundColor: theme.colorScheme.background,
-    );
-  }
-
-  /// Generates coloring based on current theme, with transparent background.
-  factory AvatarColoring.fromThemedataOnTransparent(ThemeData theme) {
-    return AvatarColoring._(
-      foregroundColor: theme.colorScheme.primary,
-      firstLayerColor: theme.colorScheme.secondary,
-      secondLayerColor: theme.colorScheme.tertiary,
-      backgroundColor: Colors.transparent,
-    );
-  }
-
-  /// Generates coloring based on current build context.
-  factory AvatarColoring.fromContext(BuildContext context) {
-    return AvatarColoring.fromThemedata(Theme.of(context));
-  }
-
-  /// Generates coloring based on current build context, with transparent background.
-  factory AvatarColoring.fromContextOnTransparent(BuildContext context) {
-    return AvatarColoring.fromThemedataOnTransparent(Theme.of(context));
-  }
-
-  final Color foregroundColor;
-  final Color backgroundColor;
-  final Color firstLayerColor;
-  final Color secondLayerColor;
-}
-
-/// Defines the number of layers the avatar is made up of.
-enum AvatarLayersCount {
-  one._(1),
-  two._(2),
-  three._(3);
-
-  const AvatarLayersCount._(this.value);
-
+  const AvatarComplexity(this.value);
   final int value;
 }
