@@ -10,11 +10,10 @@
 #### Basic Widget
 ```
 Avatar(
-                          source: 'test',
-                          coloring: AvatarColoring.fromColors(
-                              foregroundColor: Colors.pink,
-                              backgroundColor: Colors.black),
-                        ),
+    source: 'test',
+    coloring: AvatarColoring.fromColors(
+        foregroundColor: Colors.pink,
+        backgroundColor: Colors.black)),
 ```
 
 #### Avatar In Action
