@@ -9,7 +9,7 @@ class Avatar extends StatelessWidget {
   Avatar({
     required this.source,
     required this.coloring,
-    this.layersCount = AvatarLayersCount.one,
+    this.layersCount = AvatarLayersCount.three,
     this.sourceSize = 64,
     this.borderRadius = 16,
     this.decoration,
