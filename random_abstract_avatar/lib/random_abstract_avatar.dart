@@ -10,8 +10,8 @@ class Avatar extends StatelessWidget {
   /// Creates a random avatar based on the provided [source].
   Avatar({
     required this.source,
-    this.backgroundColor = Colors.white,
-    this.foregroundColor = Colors.black,
+    this.backgroundColor,
+    this.foregroundColor,
     this.borderRadius = 16,
     this.complexity = AvatarComplexity.complex,
     this.size = 64,
@@ -21,8 +21,8 @@ class Avatar extends StatelessWidget {
 
   /// Generation source for the avatar. Usually a username or email.
   final String source;
-  final Color backgroundColor;
-  final Color foregroundColor;
+  final Color? backgroundColor;
+  final Color? foregroundColor;
   final double size;
   final double borderRadius;
 
@@ -44,7 +44,8 @@ class Avatar extends StatelessWidget {
   // I don't know if this actually does anything.
   Uint8List? _cache;
 
-  Future<Uint8List> _generateImageBytedata(String s) async {
+  Future<Uint8List> _generateImageBytedata(
+      String s, BuildContext context) async {
     final hash = xxh128sum(s);
     final partSize = (hash.length / complexity.value).floor();
 
@@ -62,9 +63,13 @@ class Avatar extends StatelessWidget {
 
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder, sourceRect);
+    final background = backgroundColor ??
+        Color.lerp(Theme.of(context).colorScheme.background,
+            Theme.of(context).colorScheme.primary, 0.33)!;
+    final foreground = foregroundColor ?? Theme.of(context).colorScheme.primary;
 
     final bgPaint = Paint()
-      ..color = backgroundColor
+      ..color = background
       ..style = PaintingStyle.fill;
 
     canvas.drawRect(sourceRect, bgPaint);
@@ -73,30 +78,35 @@ class Avatar extends StatelessWidget {
       final hash = layerHashsums[i];
       final paint = Paint()
         ..color = (switch (i) {
-          0 => foregroundColor,
-          1 => foregroundColor.darker(30),
-          _ => foregroundColor.darker(60),
+          0 => foreground,
+          1 => foreground.darker(30),
+          _ => foreground.darker(60),
         })
         ..style = PaintingStyle.fill;
 
       for (var k = 0; k < 4; k++) {
         final off = k * 6;
-        const offset = 0.4;
+        const offsetOffset = 0.075;
+        const offsetScale = 0.4;
+        final layerbasedScaling = 0.15 + i * 0.025;
 
-        final offsetX = int.parse(hash.substring(off, off + 2), radix: 16) /
-            255 *
-            size *
-            offset;
-        final circleSize =
+        final offsetX = offsetOffset +
+            int.parse(hash.substring(off, off + 2), radix: 16) /
+                255 *
+                size *
+                offsetScale;
+
+        final circleSize = 0.01 +
             int.parse(hash.substring(off + 4, off + 6), radix: 16) /
                 255 *
                 size *
-                0.2;
+                layerbasedScaling;
 
-        final offsetY = int.parse(hash.substring(off + 7, off + 9), radix: 16) /
-            255 *
-            size *
-            offset;
+        final offsetY = offsetOffset +
+            int.parse(hash.substring(off + 7, off + 9), radix: 16) /
+                255 *
+                size *
+                offsetScale;
 
         canvas.drawCircle(Offset(offsetX, offsetY), circleSize, paint);
         canvas.drawCircle(
@@ -115,13 +125,15 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
+      width: size,
+      height: size,
       decoration: decoration?.copyWith(
           borderRadius: BorderRadius.circular(borderRadius)),
       child: ClipRRect(
           borderRadius: BorderRadius.circular(borderRadius),
           child: FutureBuilder(
-              future: Future(
-                  () async => _cache ??= await _generateImageBytedata(source)),
+              future: Future(() async =>
+                  _cache ??= await _generateImageBytedata(source, context)),
               builder: (c, snap) {
                 if (snap.hasData && snap.data != null) {
                   return Image.memory(
@@ -135,9 +147,9 @@ class Avatar extends StatelessWidget {
                   return Text(snap.error.toString());
                 }
 
-                return ClipRRect(
-                    borderRadius: BorderRadius.circular(borderRadius),
-                    child: Container(color: backgroundColor));
+                return Container(
+                    color: backgroundColor ??
+                        Theme.of(context).colorScheme.background);
               })));
 }
 

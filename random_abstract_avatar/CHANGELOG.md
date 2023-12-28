@@ -20,3 +20,8 @@
 * Improved field naming
 * Updated examples to match new API
 * Made readme more beautiful
+
+## 1.0.1
+* Improved default coloring using context theme
+* Improved color blob placement & size for more varied avatars
+* Fixed size issue on using thicker borders
