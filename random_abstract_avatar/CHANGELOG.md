@@ -29,3 +29,6 @@
 ## 1.1.0
 * Added Support for multiple geometric primitives to pick from
 * Using SHA256 instead of XXH128 for web compat & performance reasons
+
+## 1.1.1
+* Changed default list of geometric primtives used

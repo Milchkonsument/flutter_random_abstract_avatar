@@ -1,10 +1,11 @@
-![Randomly Generated Abstract Avatars](https://i.imgur.com/aFWeXSq.png)
+![Randomly Generated Abstract Avatars](https://i.imgur.com/qegZGci.png)
 # GENERATE UNIQUE AND ABSTRACT USER AVATARS.
 
 ## Features
 * ✨ **Highly Customizable:** allows for custom coloring and decorations
+* ♻️ **Mix & Match:** choose which geometric shapes should be used for generation
 * ✔️ **Offline:** since it doesn't use external services like [Gravatar](https://gravatar.com/), it fully works without an internet connection
-* 🚀 **Fast:** with the help of [xxhash](https://github.com/Cyan4973/xxHash) and the dart UI canvas, avatar images get generated in an instant
+* 🚀 **Fast:** with the help of [hashlib](https://pub.dev/packages/hashlib) and the dart UI canvas, avatar images get generated in an instant
 
 ## Getting Started
 ### Include in Project

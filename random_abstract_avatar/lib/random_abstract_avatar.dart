@@ -14,7 +14,7 @@ class Avatar extends StatelessWidget {
     this.foregroundColor,
     this.borderRadius = 16,
     this.complexity = AvatarComplexity.complex,
-    this.primitives = const [AvatarPrimitive.circle],
+    this.primitives = AvatarPrimitive.values,
     this.size = 64,
     this.decoration,
     super.key,
