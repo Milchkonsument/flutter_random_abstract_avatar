@@ -25,3 +25,7 @@
 * Improved default coloring using context theme
 * Improved color blob placement & size for more varied avatars
 * Fixed size issue on using thicker borders
+
+## 1.1.0
+* Added Support for multiple geometric primitives to pick from
+* Using SHA256 instead of XXH128 for web compat & performance reasons

@@ -44,10 +44,16 @@ class _TestAppState extends State<TestApp> {
           const SizedBox(width: 16),
           Avatar(
             source: _controller.text,
-            size: 64,
-            borderRadius: 16,
-            decoration:
-                BoxDecoration(border: Border.all(width: 2, color: Colors.grey)),
+            size: 128,
+            borderRadius: 32,
+            decoration: BoxDecoration(
+              border: Border.all(width: 2, color: Colors.grey),
+            ),
+            primitives: const [
+              AvatarPrimitive.triangle,
+              AvatarPrimitive.circle,
+              AvatarPrimitive.square,
+            ],
           ),
         ]))));
   }
