@@ -115,8 +115,8 @@ class Avatar extends StatelessWidget {
       final paint = Paint()
         ..color = (switch (i) {
           0 => foreground,
-          1 => foreground.darker(30),
-          _ => foreground.darker(60),
+          1 => foreground._darker(30),
+          _ => foreground._darker(60),
         })
         ..style = PaintingStyle.fill;
 

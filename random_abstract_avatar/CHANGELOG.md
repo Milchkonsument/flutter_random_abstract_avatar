@@ -32,3 +32,8 @@
 
 ## 1.1.1
 * Changed default list of geometric primtives used
+
+## 1.1.2
+* Updated example code
+* Updated readme cover image
+* Added documentation to helper functions

@@ -1,4 +1,4 @@
-![Randomly Generated Abstract Avatars](https://i.imgur.com/qegZGci.png)
+![Randomly Generated Abstract Avatars](https://i.imgur.com/yr8R8q7.png)
 # GENERATE UNIQUE AND ABSTRACT USER AVATARS.
 
 ## Features
@@ -61,12 +61,12 @@ class _TestAppState extends State<TestApp> {
 }
 ```
 
+## Example Project
+An example project can be found in the `example` folder of the repository.
+
 ## FAQ
 * _I've set a gradient/decoration image, but it doesn't show, why?_
   * If you use box decoration for the avatar, make sure the `backgroundColor` is set to transparent, because it won't show otherwise.
-
-## Example Project
-An example project can be found in the `example` folder of the repository.
 
 ## Contribution
 Feel free to support me and work on open issues by making a pull request.
