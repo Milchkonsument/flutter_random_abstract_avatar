@@ -1,5 +1,10 @@
+[![plugin version](https://img.shields.io/pub/v/random_abstract_avatar?label=pub)](https://pub.dev/packages/random_abstract_avatar)
+[![likes](https://img.shields.io/pub/likes/random_abstract_avatar?logo=dart)](https://pub.dev/packages/random_abstract_avatar/score)
+[![pub points](https://img.shields.io/pub/points/random_abstract_avatar?logo=dart&color=teal)](https://pub.dev/packages/random_abstract_avatar/score)
+[![popularity](https://img.shields.io/pub/popularity/random_abstract_avatar?logo=dart)](https://pub.dev/packages/random_abstract_avatar/score)
+
 ![Randomly Generated Abstract Avatars](https://i.imgur.com/yr8R8q7.png)
-# GENERATE UNIQUE AND ABSTRACT USER AVATARS.
+## GENERATE UNIQUE AND ABSTRACT USER AVATARS.
 
 ## Features
 * ✨ **Highly Customizable:** allows for custom coloring and decorations

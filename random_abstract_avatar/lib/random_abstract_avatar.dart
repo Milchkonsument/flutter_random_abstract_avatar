@@ -75,7 +75,7 @@ class Avatar extends StatelessWidget {
 
                 return Container(
                     color: backgroundColor ??
-                        Color.lerp(Theme.of(context).colorScheme.background,
+                        Color.lerp(Theme.of(context).colorScheme.surface,
                             Theme.of(context).colorScheme.primary, 0.33)!);
               })));
 
@@ -99,7 +99,7 @@ class Avatar extends StatelessWidget {
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder, sourceRect);
     final background = backgroundColor ??
-        Color.lerp(Theme.of(context).colorScheme.background,
+        Color.lerp(Theme.of(context).colorScheme.surface,
             Theme.of(context).colorScheme.primary, 0.33)!;
     final foreground = foregroundColor ?? Theme.of(context).colorScheme.primary;
 

@@ -37,3 +37,7 @@
 * Updated example code
 * Updated readme cover image
 * Added documentation to helper functions
+
+## 1.1.3
+* Updated deprecated colorScheme member access
+* Updated readme to include stats badges
